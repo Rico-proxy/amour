@@ -8,7 +8,7 @@ export function SanctuaryDrawer() {
 
   return (
     <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
-      <SheetContent>
+      <SheetContent className="!bg-amour-velvet/95 text-foreground dark:!bg-amour-velvet/95">
         <div className="space-y-1 pr-10">
           <SheetTitle>Velvet Sanctuary</SheetTitle>
           <SheetDescription>Letters you saved for later reading.</SheetDescription>
@@ -16,7 +16,7 @@ export function SanctuaryDrawer() {
         <div className="mt-8 flex-1 space-y-4 overflow-y-auto">
           {savedLetters.length ? (
             savedLetters.map((letter) => (
-              <article key={letter.id} className="glass-panel space-y-3 rounded-3xl border-2 border-amour-gold/20 p-5">
+              <article key={letter.id} className="space-y-4 rounded-3xl border-2 border-amour-gold/20 bg-amour-deep/50 p-5 shadow-glass dark:bg-amour-deep/25">
                 <button
                   type="button"
                   onClick={() => openLetter(letter)}
@@ -31,15 +31,28 @@ export function SanctuaryDrawer() {
                     {letter.excerpt}
                   </p>
                 </button>
-                <Button
-                  type="button"
-                  variant="unstyled"
-                  size="unstyled"
-                  onClick={() => toggleSave(letter.id)}
-                  className="text-xs font-bold text-amour-rose hover:text-amour-gold">
-                  <Bookmark className="h-3.5 w-3.5 fill-amour-gold text-amour-gold" />
-                  Remove
-                </Button>
+                {letter.comments.length ? (
+                  <div className="space-y-2">
+                    {letter.comments.slice(-2).map((comment) => (
+                      <p
+                        key={comment}
+                        className="rounded-2xl border border-amour-gold/20 bg-amour-wine/20 px-3 py-2 font-cormorant text-sm italic text-foreground/75 dark:text-amour-rose">
+                        {comment}
+                      </p>
+                    ))}
+                  </div>
+                ) : null}
+                <div>
+                  <Button
+                    type="button"
+                    variant="unstyled"
+                    size="unstyled"
+                    onClick={() => toggleSave(letter.id)}
+                    className="text-xs font-bold text-amour-rose hover:text-amour-gold">
+                    <Bookmark className="h-3.5 w-3.5 fill-amour-gold text-amour-gold" />
+                    Remove
+                  </Button>
+                </div>
               </article>
             ))
           ) : (

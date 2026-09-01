@@ -8,6 +8,7 @@ type AmourContextValue = {
   savedLetters: LoveLetter[];
   selectedLetter: LoveLetter | null;
   addLetter: (letter: LoveLetter) => void;
+  addComment: (letterId: number, comment: string) => void;
   openLetter: (letterOrId: LoveLetter | number) => void;
   closeLetter: () => void;
   isSaved: (id: number) => boolean;
@@ -31,14 +32,49 @@ function readStoredIds(key: string) {
   }
 }
 
+function readStoredComments() {
+  if (typeof window === 'undefined') return {};
+  try {
+    const value = JSON.parse(window.localStorage.getItem('amour-letter-comments') || '{}');
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return {};
+    }
+
+    const commentsByLetter: Record<number, string[]> = {};
+
+    Object.entries(value).forEach(([id, comments]) => {
+      const letterId = Number(id);
+      const validComments = Array.isArray(comments)
+        ? comments.filter((comment): comment is string => typeof comment === 'string')
+        : [];
+
+      if (Number.isFinite(letterId) && validComments.length > 0) {
+        commentsByLetter[letterId] = validComments;
+      }
+    });
+
+    return commentsByLetter;
+  } catch {
+    return {};
+  }
+}
+
 export function AmourProvider({ children }: { children: React.ReactNode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [userLetters, setUserLetters] = useState<LoveLetter[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [savedIds, setSavedIds] = useState<number[]>(() => readStoredIds('amour-saved-letters'));
   const [stampedIds, setStampedIds] = useState<number[]>(() => readStoredIds('amour-stamped-letters'));
+  const [commentOverrides, setCommentOverrides] = useState<Record<number, string[]>>(readStoredComments);
 
-  const archiveLetters = useMemo(() => [...userLetters, ...letters], [userLetters]);
+  const archiveLetters = useMemo(
+    () =>
+      [...userLetters, ...letters].map((letter) => ({
+        ...letter,
+        comments: [...letter.comments, ...(commentOverrides[letter.id] ?? [])],
+      })),
+    [commentOverrides, userLetters]
+  );
   const selectedLetter = useMemo(
     () => archiveLetters.find((letter) => letter.id === selectedId) ?? null,
     [archiveLetters, selectedId]
@@ -56,6 +92,19 @@ export function AmourProvider({ children }: { children: React.ReactNode }) {
       savedLetters: archiveLetters.filter((letter) => savedIds.includes(letter.id)),
       selectedLetter,
       addLetter: (letter) => setUserLetters((current) => [letter, ...current]),
+      addComment: (letterId, comment) => setCommentOverrides((current) => {
+        const cleanComment = comment.trim();
+        if (!cleanComment) {
+          return current;
+        }
+
+        const next = {
+          ...current,
+          [letterId]: [...(current[letterId] ?? []), cleanComment],
+        };
+        window.localStorage.setItem('amour-letter-comments', JSON.stringify(next));
+        return next;
+      }),
       openLetter: (letterOrId) => {
         setSelectedId(typeof letterOrId === 'number' ? letterOrId : letterOrId.id);
         setDrawerOpen(false);

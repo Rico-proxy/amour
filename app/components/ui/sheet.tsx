@@ -44,13 +44,13 @@ function SheetContent({
       <SheetOverlay />
       <SheetPrimitive.Content
         className={cn(
-          'glass-panel fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-md flex-col border-l border-verdant-glass-border p-6 shadow-glass outline-none data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
+          'glass-panel fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-md flex-col border-l border-amour-gold/25 p-6 shadow-glass outline-none data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
           className
         )}
         {...props}>
         {children}
         {showCloseButton ? (
-          <SheetPrimitive.Close className="absolute right-4 top-4 flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl text-verdant-mint/70 transition hover:bg-white/10 hover:text-white">
+          <SheetPrimitive.Close className="absolute right-4 top-4 flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl text-foreground transition hover:bg-amour-wine/30 dark:text-white dark:hover:bg-white/10">
             <X className="h-5 w-5" />
             <span className="sr-only">Close</span>
           </SheetPrimitive.Close>
@@ -61,14 +61,14 @@ function SheetContent({
 }
 
 function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Title>) {
-  return <SheetPrimitive.Title className={cn('font-serif text-2xl font-bold text-white', className)} {...props} />;
+  return <SheetPrimitive.Title className={cn('font-serif text-2xl font-bold text-foreground dark:text-white', className)} {...props} />;
 }
 
 function SheetDescription({
   className,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Description>) {
-  return <SheetPrimitive.Description className={cn('text-sm text-verdant-mint/75', className)} {...props} />;
+  return <SheetPrimitive.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
 }
 
 export {

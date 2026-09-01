@@ -1,4 +1,4 @@
-import { Bookmark, Feather, PenLine } from 'lucide-react';
+import { Bookmark, PenLine } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import { useAmour } from '~/components/amour/amour-context';
 import { navItems } from './data/nav';
@@ -16,7 +16,7 @@ export function Navbar() {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 py-4 sm:px-6">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <button type="button" onClick={() => scrollToId('#sec-hero')} className="pointer-events-auto flex cursor-pointer items-center gap-3 text-left">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-amour-gold/40 bg-gradient-to-tr from-amour-wine to-amour-crimson text-amour-gold shadow-glow"><Feather className="h-4 w-4" /></span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-amour-gold/45 bg-amour-crimson text-amour-gold shadow-glow ring-1 ring-white/45 dark:bg-amour-wine dark:ring-amour-gold/10"><PenLine className="h-4.5 w-4.5 stroke-[2.2]" /></span>
           <span><span className="font-heading block text-2xl font-bold leading-none tracking-widest text-foreground dark:text-white">AMOUR</span><span className="mt-1 block font-typewriter text-[8px] uppercase tracking-[0.28em] text-amour-gold">Anonymous Chronicles</span></span>
         </button>
         <nav className="glass-panel-light pointer-events-auto hidden items-center gap-1 rounded-full p-1.5 lg:flex">
