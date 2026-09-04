@@ -31,7 +31,7 @@ export function FlipLetterCard({
             {letter.title}
           </CardItem>
           <CardItem translateZ={38} as="p" className="line-clamp-4 font-cormorant text-sm italic leading-relaxed text-amour-rose/90">
-            “{letter.excerpt}”
+            "{letter.excerpt}"
           </CardItem>
           <CardItem translateZ={26} as="p" className="flex items-center gap-2 font-cormorant text-sm italic text-muted-foreground">
             <MapPin className="h-4 w-4 text-amour-gold" />

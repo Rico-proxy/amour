@@ -2,6 +2,7 @@ import { Bookmark } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '~/components/ui/sheet';
 import { useAmour } from './amour-context';
+import { sanctuaryContent } from './data/sanctuary';
 
 export function SanctuaryDrawer() {
   const { drawerOpen, setDrawerOpen, savedLetters, toggleSave, openLetter } = useAmour();
@@ -10,8 +11,8 @@ export function SanctuaryDrawer() {
     <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
       <SheetContent className="!bg-amour-velvet/95 text-foreground dark:!bg-amour-velvet/95">
         <div className="space-y-1 pr-10">
-          <SheetTitle>Velvet Sanctuary</SheetTitle>
-          <SheetDescription>Letters you saved for later reading.</SheetDescription>
+          <SheetTitle>{sanctuaryContent.title}</SheetTitle>
+          <SheetDescription>{sanctuaryContent.description}</SheetDescription>
         </div>
         <div className="mt-8 flex-1 space-y-4 overflow-y-auto">
           {savedLetters.length ? (
@@ -50,14 +51,16 @@ export function SanctuaryDrawer() {
                     onClick={() => toggleSave(letter.id)}
                     className="text-xs font-bold text-amour-rose hover:text-amour-gold">
                     <Bookmark className="h-3.5 w-3.5 fill-amour-gold text-amour-gold" />
-                    Remove
+                    {sanctuaryContent.removeAction}
                   </Button>
                 </div>
               </article>
             ))
           ) : (
             <div className="rounded-3xl border border-dashed border-amour-gold/25 p-8 text-center">
-              <p className="font-cormorant italic text-muted-foreground">Your sanctuary is empty.</p>
+              <p className="font-cormorant italic text-muted-foreground">
+                {sanctuaryContent.emptyMessage}
+              </p>
             </div>
           )}
         </div>

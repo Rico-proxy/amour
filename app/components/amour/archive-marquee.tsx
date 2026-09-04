@@ -1,6 +1,6 @@
 import { Feather } from 'lucide-react';
 import { Marquee } from '~/components/ui/marquee';
-import { telegrams } from './data/letters';
+import { telegrams } from '~/components/home/data/telegrams';
 
 export function ArchiveMarquee() {
   return (

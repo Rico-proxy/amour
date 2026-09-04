@@ -5,6 +5,7 @@ import { Button } from '~/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '~/components/ui/dialog';
 import { Input } from '~/components/ui/input';
 import { useAmour } from './amour-context';
+import { letterDialogContent } from './data/letter-dialog';
 
 export function LetterDialog() {
   const {
@@ -37,7 +38,10 @@ export function LetterDialog() {
   return (
     <Dialog open={Boolean(letter)} onOpenChange={(open) => !open && closeLetter()}>
       {letter ? (
-        <DialogContent className="!bg-amour-velvet/95 text-foreground dark:!bg-amour-velvet/95 sm:max-w-4xl">
+        <DialogContent
+          onOpenAutoFocus={(event) => event.preventDefault()}
+          className="!bg-amour-velvet/95 text-foreground dark:!bg-amour-velvet/95 sm:max-w-4xl"
+        >
           <div className="space-y-5 sm:space-y-6">
             <div className="space-y-3 pr-10">
               <span className="font-typewriter text-[10px] uppercase tracking-widest text-amour-gold">
@@ -52,7 +56,7 @@ export function LetterDialog() {
               </DialogDescription>
             </div>
             <p className="break-words font-cormorant text-xl italic leading-relaxed text-foreground/90 dark:text-amour-champagne/90 sm:text-2xl">
-              “{letter.story}”
+              "{letter.story}"
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               {letter.comments.map((comment) => (
@@ -68,12 +72,12 @@ export function LetterDialog() {
                 value={commentDraft}
                 onChange={(event) => setCommentDraft(event.target.value)}
                 className="h-12 rounded-full border-amour-gold/25 bg-amour-deep/50 px-4 text-base shadow-sm md:text-sm"
-                placeholder="Drop a comment"
+                placeholder={letterDialogContent.commentPlaceholder}
               />
               <Button
                 type="submit"
                 size="icon"
-                aria-label="Add comment"
+                aria-label={letterDialogContent.addCommentLabel}
                 className="h-12 w-12 shrink-0 rounded-full bg-amour-crimson text-white hover:bg-amour-crimson/90">
                 <Send className="h-4 w-4 text-amour-gold" />
               </Button>
@@ -91,7 +95,7 @@ export function LetterDialog() {
                     (isStamped(letter.id) ? 'fill-amour-crimson' : '')
                   }
                 />
-                {displayStamps(letter)} Stamps
+                {displayStamps(letter)} {letterDialogContent.stampsLabel}
               </Button>
               <Button
                 type="button"
@@ -100,7 +104,7 @@ export function LetterDialog() {
                 <Bookmark
                   className={isSaved(letter.id) ? 'fill-amour-gold text-amour-gold' : 'text-amour-gold'}
                 />
-                {isSaved(letter.id) ? 'Saved in Sanctuary' : 'Save to Sanctuary'}
+                {isSaved(letter.id) ? letterDialogContent.savedLabel : letterDialogContent.saveLabel}
               </Button>
             </div>
           </div>

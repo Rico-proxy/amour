@@ -2,16 +2,21 @@
 
 import { cn } from "~/lib/utils";
 
-import React, {
+import {
   createContext,
   useState,
   useContext,
   useRef,
   useEffect,
+  type Dispatch,
+  type ElementType,
+  type MouseEvent,
+  type ReactNode,
+  type SetStateAction,
 } from "react";
 
 const MouseEnterContext = createContext<
-  [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
+  [boolean, Dispatch<SetStateAction<boolean>>] | undefined
 >(undefined);
 
 export const CardContainer = ({
@@ -19,14 +24,14 @@ export const CardContainer = ({
   className,
   containerClassName,
 }: {
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
   containerClassName?: string;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect();
@@ -35,12 +40,12 @@ export const CardContainer = ({
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
   };
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseEnter = () => {
     setIsMouseEntered(true);
     if (!containerRef.current) return;
   };
 
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseLeave = () => {
     if (!containerRef.current) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
@@ -80,7 +85,7 @@ export const CardBody = ({
   children,
   className,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }) => {
   return (
@@ -107,8 +112,8 @@ export const CardItem = ({
   rotateZ = 0,
   ...rest
 }: {
-  as?: React.ElementType;
-  children: React.ReactNode;
+  as?: ElementType;
+  children: ReactNode;
   className?: string;
   translateX?: number | string;
   translateY?: number | string;
